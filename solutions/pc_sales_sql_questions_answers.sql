@@ -144,7 +144,7 @@ select top 1 PC_Model,
 FROM [pc_data].[dbo].[pc_data]
 order by Sale_price DESC;
 
--- 26. Calculate the average number of days between Purchase Date and Ship Date.
+-- 26. Calculate the average number of days between Purchase Date and Ship Date. (error)
 select avg (datediff (day, cast (Purchase_Date as date), cast (Ship_Date as date))) as average_number_of_days_between_Purchase_and_Ship_Date
 FROM [pc_data].[dbo].[pc_data]
 
@@ -170,7 +170,8 @@ where Sale_Price < PC_Market_Price;
 -- 30. Rank Sales Person Name by Total Sales per Employee using a window function.
 select Sales_Person_Name,
 		sum (Sale_Price) as Total_Sales,
-	rank () over (order by sum (Sale_Price) DESC) as Rank_number
+	rank () over (partition by Sales_Person_Name 
+	order by sum (Sale_Price) DESC) as Rank_number
  FROM [pc_data].[dbo].[pc_data]
 group by Sales_Person_Name;
 
